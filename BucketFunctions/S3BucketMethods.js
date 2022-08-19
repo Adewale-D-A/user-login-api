@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-const { bucketCredentials } = require("./config");
+const { bucketCredentials } = require("../config");
 
 const s3 = new AWS.S3(bucketCredentials);
 
