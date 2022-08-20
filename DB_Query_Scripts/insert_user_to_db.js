@@ -1,5 +1,4 @@
-const db = require("../dbCredentials");
-db.connect();
+const { HashPassword } = require("../bcrypt/passwordHashing");
 
 const inserUserToDB = (
   firstname,
@@ -10,25 +9,15 @@ const inserUserToDB = (
   res,
   obj
 ) => {
-  db.query(
-    `INSERT INTO user_registration (firstname, lastname, email, password, username) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${password.toLowerCase()}", "${username.toLowerCase()}" );`,
-    (err, result) => {
-      if (err) {
-        res.status(400).send({
-          success: false,
-          message: "server could not query db",
-          data: err,
-        });
-      }
-      if (result) {
-        res.status(201).send({
-          success: true,
-          message: "user registered successfully",
-          user_data: obj,
-          data: result,
-        });
-      }
-    }
+  HashPassword(
+    (password = password),
+    (saltRounds = 10),
+    (firstname = firstname),
+    (lastname = lastname),
+    (email = email),
+    (username = username),
+    (res = res),
+    (obj = obj)
   );
 };
 

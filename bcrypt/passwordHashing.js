@@ -1,20 +1,45 @@
 const bcrypt = require("bcrypt");
-const fs = require("fs");
+const { authToken, verifyToken } = require("../jwt-verification/AuthToken");
+const { bucketCredentials } = require("../config");
 
-const HashPassword = (password, saltRounds) => {
+const secretKey = bucketCredentials.accessKeyId;
+
+const db = require("../dbCredentials");
+db.connect();
+
+const HashPassword = (
+  password,
+  saltRounds,
+  firstname,
+  lastname,
+  email,
+  username,
+  res,
+  obj
+) => {
   bcrypt
     .hash(password, saltRounds)
     .then((hash) => {
-      console.log(hash);
-      fs.writeFile("hashedpass.txt", hash, (err, result) => {
-        if (err) {
-          console.log("error", err);
+      db.query(
+        `INSERT INTO user_registration (firstname, lastname, email, password, username) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}" );`,
+        (err, result) => {
+          if (err) {
+            res.status(400).send({
+              success: false,
+              message: "server could not query db",
+              data: err,
+            });
+          }
+          if (result) {
+            res.status(201).send({
+              success: true,
+              message: "user registered successfully",
+              user_data: obj,
+              data: result,
+            });
+          }
         }
-        if (result) {
-          console.log("done", result);
-        }
-      });
-      return hash;
+      );
     })
     .catch((err) => {
       console.log(err);
@@ -22,22 +47,78 @@ const HashPassword = (password, saltRounds) => {
     });
 };
 
-const verifyHash = (path, password) => {
-  fs.readFile(path, "utf-8", (err, result) => {
+const verifyHash = (inputPassword, dbUsernameQuery, res) => {
+  bcrypt.compare(inputPassword, dbUsernameQuery[0].password, (err, result) => {
     if (err) {
-      console.log("could not read file", err);
+      res.status(401).send({
+        success: false,
+        message: "error verifying password",
+      });
+    }
+    if (!result) {
+      bcrypt.compare(
+        inputPassword,
+        dbUsernameQuery[1].password,
+        (err, result) => {
+          if (err) {
+            res.status(401).send({
+              success: false,
+              message: "error verifying password",
+            });
+          }
+          if (!result) {
+            res.status(401).send({
+              success: false,
+              message: "password incorrect",
+            });
+          }
+          if (result) {
+            const AccessToken = authToken(
+              (jsonPayload = {
+                id: dbUsernameQuery[1].id,
+                firstname: dbUsernameQuery[1].firstname,
+                lastname: dbUsernameQuery[1].lastname,
+                username: dbUsernameQuery[1].username,
+                email: dbUsernameQuery[1].email,
+              }),
+              secretKey
+            );
+            res.status(200).send({
+              success: true,
+              message: "user Authenticated",
+              access_token: AccessToken,
+              user_data: {
+                firstname: dbUsernameQuery[1].firstname,
+                lastname: dbUsernameQuery[1].lastname,
+                username: dbUsernameQuery[1].username,
+                email: dbUsernameQuery[1].email,
+              },
+            });
+          }
+        }
+      );
     }
     if (result) {
-      console.log("read file result", result);
-      bcrypt.compare(password, result, (err, result) => {
-        if (err) {
-          console.log("could not read pass", err);
-          return err;
-        }
-        if (result) {
-          console.log("password verified", result);
-          return result;
-        }
+      const AccessToken = authToken(
+        (jsonPayload = {
+          id: dbUsernameQuery[0].id,
+          firstname: dbUsernameQuery[0].firstname,
+          lastname: dbUsernameQuery[0].lastname,
+          username: dbUsernameQuery[0].username,
+          email: dbUsernameQuery[0].email,
+        }),
+        secretKey
+      );
+      res.status(200).send({
+        success: true,
+        message: "User Authenticated  Succesful",
+        access_token: AccessToken,
+        user_data: {
+          firstname: dbUsernameQuery[0].firstname,
+          lastname: dbUsernameQuery[0].lastname,
+          username: dbUsernameQuery[0].username,
+          email: dbUsernameQuery[0].email,
+        },
       });
     }
   });

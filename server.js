@@ -1,11 +1,11 @@
 const express = require("express");
 const server = express();
-const register = require("./register");
+const authenticate = require("./register");
 
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
 
-server.use("/auth", register);
+server.use("/authenticate", authenticate);
 
 server.get("/", (req, res) => {
   res.status(200).send("Welcome Home");

@@ -2,6 +2,10 @@ const db = require("../dbCredentials");
 db.connect();
 
 const { inserUserToDB } = require("./insert_user_to_db");
+const { verifyHash } = require("../bcrypt/passwordHashing");
+const {
+  AccessControlTranslationFilterSensitiveLog,
+} = require("@aws-sdk/client-s3");
 
 // check if user ALREADY exist in DB
 const checkUser = (
@@ -44,7 +48,6 @@ const checkUser = (
             success: false,
             messages: userQuery,
             user_data: obj,
-            data: data,
           });
         }
         if (!data[0]) {
@@ -63,4 +66,32 @@ const checkUser = (
   );
 };
 
+const queryLoginCredentials = (username_email, password, res) => {
+  db.query(
+    `SELECT * FROM user_registration WHERE username = "${username_email}" OR email = "${username_email}"`,
+    (err, result) => {
+      if (err) {
+        res.status(400).send({
+          success: false,
+          message: "could not query database",
+          data: err,
+        });
+      }
+      if (result[0]) {
+        verifyHash(
+          (inputPassword = password),
+          (dbUsernameQuery = result),
+          (res = res)
+        );
+      } else {
+        res.status(400).send({
+          success: false,
+          message: "user does not exist",
+        });
+      }
+    }
+  );
+};
+
+exports.queryLoginCredentials = queryLoginCredentials;
 exports.checkUser = checkUser;
