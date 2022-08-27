@@ -3,9 +3,6 @@ db.connect();
 
 const { inserUserToDB } = require("./insert_user_to_db");
 const { verifyHash } = require("../bcrypt/passwordHashing");
-const {
-  AccessControlTranslationFilterSensitiveLog,
-} = require("@aws-sdk/client-s3");
 
 // check if user ALREADY exist in DB
 const checkUser = (
@@ -44,7 +41,7 @@ const checkUser = (
               });
             }
           }
-          res.status(400).send({
+          res.status(409).send({
             success: false,
             messages: userQuery,
             user_data: obj,
@@ -84,7 +81,7 @@ const queryLoginCredentials = (username_email, password, res) => {
           (res = res)
         );
       } else {
-        res.status(400).send({
+        res.status(404).send({
           success: false,
           message: "user does not exist",
         });

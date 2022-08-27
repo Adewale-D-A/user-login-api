@@ -21,7 +21,7 @@ router.post("/register", (req, res) => {
       }
     }
     if (arrays[0]) {
-      res.status(400).send({
+      res.status(406).send({
         success: false,
         message: "failed to register user",
         data: arrays,
@@ -31,7 +31,7 @@ router.post("/register", (req, res) => {
       checkUser(firstname, lastname, email, password, username, obj, res);
     }
   } else {
-    res.status(400).send({
+    res.status(406).send({
       success: false,
       message: "bad request body",
       payload_structure: {
@@ -49,14 +49,14 @@ router.post("/login", (req, res) => {
   const { username_email, password } = req.body;
   if (username_email && password) {
     queryLoginCredentials(username_email, password, res);
-    // res.status(200).send("user credentials accepted");
   } else {
-    res.status(400).send({
+    res.status(406).json({
       success: false,
+      layer: "no username or password",
       message: "bad request body",
       payload_structure: {
         username_email: "required",
-        password: "requied",
+        password: "required",
       },
     });
   }

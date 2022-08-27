@@ -111,7 +111,7 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
       );
       res.status(200).send({
         success: true,
-        message: "User Authenticated  Succesful",
+        message: "User Authenticated  Succesfully",
         access_token: AccessToken,
         user_data: {
           firstname: dbUsernameQuery[0].firstname,
