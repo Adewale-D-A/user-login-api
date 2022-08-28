@@ -43,8 +43,7 @@ const checkUser = (
           }
           res.status(409).send({
             success: false,
-            messages: userQuery,
-            user_data: obj,
+            message: userQuery,
           });
         }
         if (!data[0]) {

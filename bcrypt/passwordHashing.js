@@ -34,8 +34,6 @@ const HashPassword = (
             res.status(201).send({
               success: true,
               message: "user registered successfully",
-              user_data: obj,
-              data: result,
             });
           }
         }
@@ -56,47 +54,63 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
       });
     }
     if (!result) {
-      bcrypt.compare(
-        inputPassword,
-        dbUsernameQuery[1].password,
-        (err, result) => {
-          if (err) {
-            res.status(401).send({
-              success: false,
-              message: "error verifying password",
-            });
+      if (dbUsernameQuery[1]) {
+        bcrypt.compare(
+          inputPassword,
+          dbUsernameQuery[1].password,
+          (err, result) => {
+            if (err) {
+              res.status(401).send({
+                success: false,
+                message: "error verifying password",
+              });
+            }
+            if (!result) {
+              res.status(401).send({
+                success: false,
+                message: "password incorrect",
+              });
+            }
+            if (result) {
+              const AccessToken = authToken(
+                (jsonPayload = {
+                  id: dbUsernameQuery[1].id,
+                  firstname: dbUsernameQuery[1].firstname,
+                  lastname: dbUsernameQuery[1].lastname,
+                  username: dbUsernameQuery[1].username,
+                  email: dbUsernameQuery[1].email,
+                }),
+                secretKey
+              );
+              res
+                .cookie("token", AccessToken, {
+                  encode: String,
+                  maxAge: 1000 * 60 * 10, //10mins
+                  httpOnly: true,
+                  secure: true,
+                  sameSite: true,
+                })
+                .status(200)
+                .send({
+                  success: true,
+                  message: "user Authenticated",
+                  access_token: AccessToken,
+                  user_data: {
+                    firstname: dbUsernameQuery[1].firstname,
+                    lastname: dbUsernameQuery[1].lastname,
+                    username: dbUsernameQuery[1].username,
+                    email: dbUsernameQuery[1].email,
+                  },
+                });
+            }
           }
-          if (!result) {
-            res.status(401).send({
-              success: false,
-              message: "password incorrect",
-            });
-          }
-          if (result) {
-            const AccessToken = authToken(
-              (jsonPayload = {
-                id: dbUsernameQuery[1].id,
-                firstname: dbUsernameQuery[1].firstname,
-                lastname: dbUsernameQuery[1].lastname,
-                username: dbUsernameQuery[1].username,
-                email: dbUsernameQuery[1].email,
-              }),
-              secretKey
-            );
-            res.status(200).send({
-              success: true,
-              message: "user Authenticated",
-              access_token: AccessToken,
-              user_data: {
-                firstname: dbUsernameQuery[1].firstname,
-                lastname: dbUsernameQuery[1].lastname,
-                username: dbUsernameQuery[1].username,
-                email: dbUsernameQuery[1].email,
-              },
-            });
-          }
-        }
-      );
+        );
+      } else {
+        res.status(401).send({
+          success: false,
+          message: "password incorrect",
+        });
+      }
     }
     if (result) {
       const AccessToken = authToken(
@@ -109,17 +123,26 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
         }),
         secretKey
       );
-      res.status(200).send({
-        success: true,
-        message: "User Authenticated  Succesfully",
-        access_token: AccessToken,
-        user_data: {
-          firstname: dbUsernameQuery[0].firstname,
-          lastname: dbUsernameQuery[0].lastname,
-          username: dbUsernameQuery[0].username,
-          email: dbUsernameQuery[0].email,
-        },
-      });
+      res
+        .cookie("token", AccessToken, {
+          encode: String,
+          maxAge: 1000 * 60 * 10, //10mins
+          httpOnly: true,
+          secure: true,
+          sameSite: true,
+        })
+        // .clearCookie("data")
+        .status(200)
+        .send({
+          success: true,
+          message: "User Authenticated  Succesfully",
+          user_data: {
+            firstname: dbUsernameQuery[0].firstname,
+            lastname: dbUsernameQuery[0].lastname,
+            username: dbUsernameQuery[0].username,
+            email: dbUsernameQuery[0].email,
+          },
+        });
     }
   });
 };
