@@ -4,6 +4,9 @@ const cookieParser = require("cookie-parser");
 const server = express();
 
 const authenticate = require("./register");
+const { SendMail } = require("./nodemailer/nodeMailer");
+
+const { mailCredentials } = require("./config");
 
 server.use(cookieParser());
 server.use(
@@ -25,6 +28,7 @@ server.post("/auth/login", (req, res) => {
 });
 
 server.get("/", (req, res) => {
+  SendMail(mailCredentials.user, mailCredentials.password);
   res.status(200).send("Welcome Home");
 });
 
