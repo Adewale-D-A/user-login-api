@@ -1,10 +1,13 @@
 const bcrypt = require("bcrypt");
 const { authToken, verifyToken } = require("../jwt-verification/AuthToken");
-const { bucketCredentials } = require("../config");
+const { bucketCredentials, mailCredentials } = require("../config");
 
 const secretKey = bucketCredentials.accessKeyId;
 
 const db = require("../dbCredentials");
+const {
+  SendMailVerCode,
+} = require("../sendEmailLink/sendMailVerificationCode");
 db.connect();
 
 const HashPassword = (
@@ -15,13 +18,14 @@ const HashPassword = (
   email,
   username,
   res,
+  generatedCode,
   obj
 ) => {
   bcrypt
     .hash(password, saltRounds)
     .then((hash) => {
       db.query(
-        `INSERT INTO user_registration (firstname, lastname, email, password, username) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}" );`,
+        `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}", "${generatedCode}" );`,
         (err, result) => {
           if (err) {
             res.status(400).send({
@@ -31,9 +35,17 @@ const HashPassword = (
             });
           }
           if (result) {
+            SendMailVerCode(
+              (sender = mailCredentials.user),
+              (password = mailCredentials.password),
+              (receiver = email),
+              (username = username),
+              (veriCode = generatedCode)
+            );
             res.status(201).send({
               success: true,
               message: "user registered successfully",
+              message2: "a verification code has been sent to you mail",
             });
           }
         }

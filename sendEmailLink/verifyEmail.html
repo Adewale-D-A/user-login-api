@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Email</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@300&display=swap");
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .wlc-msg {
+        text-align: center;
+        font-family: Yanone Kaffeesatz;
+        color: #faea48;
+        filter: drop-shadow(0 0 15px #d8792c);
+      }
+      .click-verifier {
+        text-align: center;
+        font-family: Yanone Kaffeesatz;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="wlc-msg"><h1>WELCOME TO IINVISION</h1></div>
+      <div class="click-verifier">
+        <span>Your verification code is : <b>{{verificationCode}}</b></span
+        ><br />
+        <span>or click the button to verify email</span><br />
+        <a
+          href="http://localhost:5000/send?credentials={{jwtToken}}"
+          target="_blank"
+          ><button>Verify Email</button></a
+        >
+      </div>
+    </div>
+  </body>
+</html>

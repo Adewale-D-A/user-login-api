@@ -3,10 +3,9 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const server = express();
 
-const authenticate = require("./register");
-const { SendMail } = require("./nodemailer/nodeMailer");
+const { VerifyEmailLink } = require("./verifyEmailLink/verifyEmail");
 
-const { mailCredentials } = require("./config");
+const authenticate = require("./register");
 
 server.use(cookieParser());
 server.use(
@@ -20,16 +19,13 @@ server.use(express.json());
 
 server.use("/authenticate", authenticate);
 
-server.post("/auth/login", (req, res) => {
-  res.status(200).send({
-    message: "hello",
-    success: true,
-  });
+server.get("/", (req, res) => {
+  res.status(200).send("Welcome Home");
 });
 
-server.get("/", (req, res) => {
-  SendMail(mailCredentials.user, mailCredentials.password);
-  res.status(200).send("Welcome Home");
+server.get("/send", (req, res) => {
+  const { credentials } = req.query;
+  VerifyEmailLink(credentials, res);
 });
 
 server.listen(5000, () => {

@@ -1,0 +1,188 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to iinvision</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@300&display=swap");
+      body {
+        margin: 0;
+        font-family: Yanone Kaffeesatz;
+      }
+      .header {
+        background-color: #06283d;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+      }
+      .ii-logo {
+        position: relative;
+        font-size: 25px;
+      }
+      .ii-logo-2::before {
+        content: attr(text-data);
+        width: 0;
+        overflow: hidden;
+        position: absolute;
+        animation: animate 2s linear 0s infinite forwards;
+      }
+      .i-name {
+        filter: drop-shadow(0 0 15px #faea48);
+      }
+      @keyframes animate {
+        from {
+          width: 0%;
+          color: white;
+        }
+        to {
+          width: 100%;
+          color: #faea48;
+          filter: drop-shadow(0 0 15px #ffffff);
+        }
+      }
+      .main {
+        margin-top: 30px;
+      }
+      .welcome-main {
+        display: flex;
+        justify-content: space-between;
+        width: 80vw;
+      }
+      .welcome {
+        display: flex;
+        justify-content: center;
+      }
+      .welcome-msg-1 {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 20vw;
+        color: wheat;
+      }
+      .welcome-msg-1 {
+        background-color: #3f4e4f;
+      }
+      .footer {
+        display: flex;
+        justify-content: center;
+        background-color: #3e2c41;
+        margin-top: 30px;
+        padding: 20px;
+      }
+      .footer-style {
+        width: 80vw;
+      }
+      .icons {
+        font-size: 20px;
+        padding: 5px;
+        color: #5584ac;
+      }
+      .icons:hover {
+        color: #fc997c;
+        cursor: pointer;
+      }
+      .footer-style {
+        display: flex;
+        justify-content: space-between;
+      }
+      .wlc-msg {
+        text-align: center;
+      }
+      .verify-btn {
+        all: unset;
+        background-color: #faea48;
+        padding: 10px;
+        border-radius: 5px;
+        color: #06283d;
+        font-weight: 700;
+      }
+      .verify-btn:hover {
+        cursor: pointer;
+        background-color: #96926e;
+      }
+      @media only screen and (max-width: 500px) {
+        .wlc-msg {
+          font-size: 15px;
+          text-align: center;
+        }
+        .welcome-msg-1 {
+          height: 60vw;
+        }
+        .acount-msg {
+          text-align: center;
+        }
+        .veri-msg {
+          text-align: center;
+          line-height: 25px;
+        }
+        code {
+          background-color: #6ebf8b;
+          margin: 10px;
+          padding: 5px;
+          border-radius: 5px;
+        }
+        .ii-inc {
+          font-size: 12px;
+          color: white;
+        }
+        .icons {
+          font-size: 15px;
+          padding: 5px;
+          color: #5584ac;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="ii-logo" style="display: flex; justify-content: center">
+        <div>
+          <h1 class="ii-logo-2" text-data="iinvision&nbsp;&#128161;">
+            iinvision&nbsp;&#128161;
+          </h1>
+        </div>
+      </div>
+    </div>
+    <main class="main">
+      <div class="welcome">
+        <div class="welcome-main">
+          <div class="welcome-msg-1">
+            <div>
+              <h2 class="wlc-msg">
+                Your email verification was successful, Welcome to
+                <span class="i-name">iinvision</span>
+                family buddy!
+              </h2>
+            </div>
+            <div>
+              <a href="" class="verify-btn">
+                <span>LOGIN</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="footer-style">
+        <div class="ii-inc">
+          <span>www.iinvision.io</span><br />
+          <span>(c)2022 iinvision inc</span>
+        </div>
+        <div>
+          <span class="icons"><i class="fa-brands fa-twitter"></i></span>
+          <span class="icons"><i class="fa-brands fa-instagram"></i></span>
+          <span class="icons"><i class="fa-brands fa-tiktok"></i></span>
+          <span class="icons"><i class="fa-brands fa-slack"></i></span>
+        </div>
+      </div>
+    </footer>
+    <script
+      src="https://kit.fontawesome.com/843548fe50.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,3 +1,4 @@
+const phoneToken = require("generate-sms-verification-code");
 const { HashPassword } = require("../bcrypt/passwordHashing");
 
 const inserUserToDB = (
@@ -9,6 +10,8 @@ const inserUserToDB = (
   res,
   obj
 ) => {
+  var generatedCode = phoneToken(6, { type: "string" });
+
   HashPassword(
     (password = password),
     (saltRounds = 10),
@@ -17,6 +20,7 @@ const inserUserToDB = (
     (email = email),
     (username = username),
     (res = res),
+    (generatedCode = generatedCode),
     (obj = obj)
   );
 };
