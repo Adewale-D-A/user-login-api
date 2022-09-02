@@ -6,7 +6,6 @@ const verifyTokenCode = (code, res) => {
     `SELECT * FROM user_registration WHERE verificationCode = "${code}";`,
     (err, result) => {
       if (err) {
-        console.log(err);
         res.status(400).send({
           success: false,
           message: "could not query db",
@@ -14,7 +13,6 @@ const verifyTokenCode = (code, res) => {
         });
       }
       if (result) {
-        console.log(result);
         if (result.length < 1) {
           res.status(400).send({
             success: false,
@@ -26,7 +24,6 @@ const verifyTokenCode = (code, res) => {
             `UPDATE user_registration SET mailverified= "true" WHERE verificationCode="${code}";`,
             (err, data) => {
               if (err) {
-                console.log(err);
                 res.status(401).send({
                   success: false,
                   message: "unable to send update db",
