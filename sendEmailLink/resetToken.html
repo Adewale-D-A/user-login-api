@@ -22,6 +22,7 @@
       .click-verifier {
         text-align: center;
         font-family: Yanone Kaffeesatz;
+        font-size: 20px;
       }
     </style>
   </head>
@@ -29,14 +30,7 @@
     <div>
       <div class="wlc-msg"><h1>WELCOME TO IINVISION</h1></div>
       <div class="click-verifier">
-        <span>Your verification code is : <b>{{verificationCode}}</b></span
-        ><br />
-        <span>or click the button to verify email</span><br />
-        <a
-          href="http://localhost:5000/emailauth/send?credentials={{jwtToken}}"
-          target="_blank"
-          ><button>Verify Email</button></a
-        >
+        <span>Your verification code is : <b>{{verificationCode}}</b></span>
       </div>
     </div>
   </body>
