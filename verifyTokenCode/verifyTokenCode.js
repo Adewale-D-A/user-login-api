@@ -70,7 +70,7 @@ const resetOTP = (email, res) => {
         if (result.length >= 1) {
           const generatedCode = randomstring.generate(10);
           db.query(
-            `UPDATE user_registration SET mailverified= "true" WHERE verificationCode="${generatedCode}";`,
+            `UPDATE user_registration SET verificationCode="${generatedCode}" WHERE email="${email}";`,
             (err, data) => {
               if (err) {
                 res.status(401).send({

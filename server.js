@@ -8,6 +8,7 @@ const server = express();
 
 const authenticate = require("./register");
 const emailVerification = require("./emailTokenRelated/sendEmailToken");
+const resetPassword = require("./resetPassword/resetPassword");
 
 server.use(cookieParser());
 server.use(
@@ -25,30 +26,13 @@ server.use("/authenticate", authenticate);
 //email authentication related tokens
 server.use("/emailauth", emailVerification);
 
+//reset User password
+server.use("/pass", resetPassword);
+
 //endpoint home
 server.get("/", (req, res) => {
   res.status(200).send("Welcome Home");
 });
-
-// authomatic mail verification
-// server.get("/send", (req, res) => {
-//   const { credentials } = req.query;
-//   VerifyEmailLink(credentials, res);
-// });
-
-//manual mail verification code endpoint
-// server.post("/verifytoken", (req, res) => {
-//   const { token } = req.body;
-//   if (!token) {
-//     res.status(401).send({
-//       success: false,
-//       message: "request body is invalid",
-//     });
-//   }
-//   if (token) {
-//     verifyTokenCode(token, res);
-//   }
-// });
 
 server.listen(5000, () => {
   console.log("my server is listening...");

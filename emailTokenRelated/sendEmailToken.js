@@ -34,6 +34,9 @@ router.post("/resetotp", (req, res) => {
     res.status(401).send({
       success: false,
       message: "request body is invalid",
+      data: {
+        email: "value@example.com",
+      },
     });
   }
   if (email) {
