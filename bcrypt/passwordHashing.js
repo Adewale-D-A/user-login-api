@@ -8,6 +8,7 @@ const db = require("../dbCredentials");
 const {
   SendMailVerCode,
 } = require("../sendEmailLink/sendMailVerificationCode");
+const { CreateDynamodbUserTable } = require("../createDynamoTable/createTable");
 db.connect();
 
 const HashPassword = (
@@ -25,7 +26,7 @@ const HashPassword = (
     .hash(password, saltRounds)
     .then((hash) => {
       db.query(
-        `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}", "${generatedCode}" );`,
+        `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode, dynamoDBuserTable) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}", "${generatedCode}", "${username.toLowerCase()}" );`,
         (err, result) => {
           if (err) {
             res.status(400).send({
@@ -42,11 +43,10 @@ const HashPassword = (
               (username = username),
               (veriCode = generatedCode)
             );
-            res.status(201).send({
-              success: true,
-              message: "user registered successfully",
-              message2: "a verification code has been sent to you mail",
-            });
+            CreateDynamodbUserTable(
+              (tableName = username.toLowerCase()),
+              (res = res)
+            );
           }
         }
       );
@@ -91,6 +91,7 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
                   lastname: dbUsernameQuery[1].lastname,
                   username: dbUsernameQuery[1].username,
                   email: dbUsernameQuery[1].email,
+                  dynamoDBuserTable: dbUsernameQuery[1].dynamoDBuserTable,
                 }),
                 secretKey
               );
@@ -106,7 +107,6 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
                 .send({
                   success: true,
                   message: "user Authenticated",
-                  access_token: AccessToken,
                   user_data: {
                     firstname: dbUsernameQuery[1].firstname,
                     lastname: dbUsernameQuery[1].lastname,
@@ -132,6 +132,7 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
           lastname: dbUsernameQuery[0].lastname,
           username: dbUsernameQuery[0].username,
           email: dbUsernameQuery[0].email,
+          dynamoDBuserTable: dbUsernameQuery[0].dynamoDBuserTable,
         }),
         secretKey
       );
