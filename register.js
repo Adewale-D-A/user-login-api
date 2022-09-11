@@ -48,7 +48,7 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { username_email, password } = req.body;
   if (username_email && password) {
-    // console.log(req.cookies.token);
+    // console.log(req.cookies);
     queryLoginCredentials(username_email, password, res);
   } else {
     res.status(406).json({

@@ -17,15 +17,14 @@ server.use(
     credentials: true,
   })
 );
+server.use(express.urlencoded({ extended: false }));
+server.use(express.json());
 
 // server.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 //   next();
 //   });
-
-server.use(express.urlencoded({ extended: false }));
-server.use(express.json());
 
 //login and registration endpoints
 server.use("/authenticate", authenticate);
