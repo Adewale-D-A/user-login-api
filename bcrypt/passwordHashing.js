@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { authToken, verifyToken } = require("../jwt-verification/AuthToken");
+const { authToken } = require("../jwt-verification/AuthToken");
 const { bucketCredentials, mailCredentials } = require("../config");
 
 const secretKey = bucketCredentials.accessKeyId;
@@ -9,7 +9,7 @@ const {
   SendMailVerCode,
 } = require("../sendEmailLink/sendMailVerificationCode");
 const { CreateDynamodbUserTable } = require("../createDynamoTable/createTable");
-db.connect();
+// db.connect();
 
 const HashPassword = (
   password,
@@ -25,31 +25,42 @@ const HashPassword = (
   bcrypt
     .hash(password, saltRounds)
     .then((hash) => {
-      db.query(
-        `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode, dynamoDBuserTable) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}", "${generatedCode}", "${username.toLowerCase()}" );`,
-        (err, result) => {
-          if (err) {
-            res.status(400).send({
-              success: false,
-              message: "server could not query db",
-              data: err,
-            });
-          }
-          if (result) {
-            SendMailVerCode(
-              (sender = mailCredentials.user),
-              (password = mailCredentials.password),
-              (receiver = email),
-              (username = username),
-              (veriCode = generatedCode)
-            );
-            CreateDynamodbUserTable(
-              (tableName = username.toLowerCase()),
-              (res = res)
-            );
-          }
+      db.connect((err) => {
+        if (err) {
+          console.log("could not establish a connection with database");
+          res.status(404).send({
+            success: false,
+            message:
+              "could not establish a connection with database, please try again later",
+          });
         }
-      );
+        // console.log("connected to database");
+        db.query(
+          `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode, dynamoDBuserTable) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}", "${generatedCode}", "${username.toLowerCase()}" );`,
+          (err, result) => {
+            if (err) {
+              res.status(400).send({
+                success: false,
+                message: "server could not query db",
+                data: err,
+              });
+            }
+            if (result) {
+              SendMailVerCode(
+                (sender = mailCredentials.user),
+                (password = mailCredentials.password),
+                (receiver = email),
+                (username = username),
+                (veriCode = generatedCode)
+              );
+              CreateDynamodbUserTable(
+                (tableName = username.toLowerCase()),
+                (res = res)
+              );
+            }
+          }
+        );
+      });
     })
     .catch((err) => {
       console.log(err);
