@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const { secret_data } = require("./config");
 
 module.exports = mysql.createConnection({
