@@ -24,7 +24,8 @@ const checkUser = (
     }
     // console.log("connected to database");
     db.query(
-      `SELECT * FROM user_registration WHERE username = "${username.toLowerCase()}" OR email= "${email.toLowerCase()}"`,
+      `SELECT * FROM user_registration WHERE username = ? OR email= ?`,
+      [username.toLowerCase(), email.toLowerCase()],
       (err, data) => {
         if (err) {
           res.status(404).send({
@@ -84,7 +85,8 @@ const queryLoginCredentials = (username_email, password, res) => {
     }
     // console.log("connected to database");
     db.query(
-      `SELECT * FROM user_registration WHERE username = "${username_email}" OR email = "${username_email}"`,
+      `SELECT * FROM user_registration WHERE username = ? OR email = ?`,
+      [username_email, username_email],
       (err, result) => {
         if (err) {
           res.status(400).send({

@@ -21,7 +21,8 @@ const VerifyEmailLink = (credentials, res) => {
         }
         console.log("connected to database");
         db.query(
-          `UPDATE user_registration SET mailverified="true" WHERE (email = "${result.email}" AND verificationCode="${result.verificationCode}");`,
+          `UPDATE user_registration SET mailverified="true" WHERE (email = ? AND verificationCode = ?);`,
+          [result.email, result.verificationCode],
           (error, results) => {
             if (error) {
               res.sendFile(path.join(__dirname, "/failed.html"));

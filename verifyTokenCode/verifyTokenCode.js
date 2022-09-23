@@ -18,7 +18,8 @@ const verifyTokenCode = (code, res) => {
     }
     console.log("connected to database");
     db.query(
-      `SELECT * FROM user_registration WHERE verificationCode = "${code}";`,
+      `SELECT * FROM user_registration WHERE verificationCode = ?;`,
+      [code],
       (err, result) => {
         if (err) {
           res.status(400).send({
@@ -36,7 +37,8 @@ const verifyTokenCode = (code, res) => {
           }
           if (result.length >= 1) {
             db.query(
-              `UPDATE user_registration SET mailverified= "true" WHERE verificationCode="${code}";`,
+              `UPDATE user_registration SET mailverified= "true" WHERE verificationCode=?;`,
+              [code],
               (err, data) => {
                 if (err) {
                   res.status(401).send({
@@ -71,7 +73,8 @@ const resetOTP = (email, res) => {
     }
     console.log("connected to database");
     db.query(
-      `SELECT * FROM user_registration WHERE email = "${email}";`,
+      `SELECT * FROM user_registration WHERE email = ?;`,
+      [email],
       (err, result) => {
         if (err) {
           res.status(400).send({
@@ -90,7 +93,8 @@ const resetOTP = (email, res) => {
           if (result.length >= 1) {
             const generatedCode = randomstring.generate(10);
             db.query(
-              `UPDATE user_registration SET verificationCode="${generatedCode}" WHERE email="${email}";`,
+              `UPDATE user_registration SET verificationCode=? WHERE email=?;`,
+              [generatedCode, email],
               (err, data) => {
                 if (err) {
                   res.status(401).send({

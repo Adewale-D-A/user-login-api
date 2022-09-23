@@ -30,7 +30,8 @@ router.post("/resetPassword", (req, res) => {
       }
       console.log("connected to database");
       db.query(
-        `SELECT * FROM user_registration WHERE verificationCode = "${resetCode}";`,
+        `SELECT * FROM user_registration WHERE verificationCode = ?;`,
+        [resetCode],
         (err, result) => {
           if (err) {
             res.status(400).send({
@@ -51,7 +52,8 @@ router.post("/resetPassword", (req, res) => {
               const generatedCode = randomstring.generate(10);
               bcrypt.hash(newPassword, saltRounds).then((hash) => {
                 db.query(
-                  `UPDATE user_registration SET password= "${hash}" WHERE verificationCode="${resetCode}";`,
+                  `UPDATE user_registration SET password= ? WHERE verificationCode=?;`,
+                  [hash, resetCode],
                   (err, data) => {
                     if (err) {
                       res.status(401).send({
@@ -61,7 +63,8 @@ router.post("/resetPassword", (req, res) => {
                     }
                     if (data) {
                       db.query(
-                        `UPDATE user_registration SET verificationCode="${generatedCode}" WHERE verificationCode="${resetCode}";`,
+                        `UPDATE user_registration SET verificationCode=? WHERE verificationCode=?;`,
+                        [generatedCode, resetCode],
                         (err, result) => {
                           if (err) {
                             res.status(401).send({

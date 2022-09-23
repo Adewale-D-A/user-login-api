@@ -36,7 +36,16 @@ const HashPassword = (
         }
         // console.log("connected to database");
         db.query(
-          `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode, dynamoDBuserTable) VALUES ("${firstname.toLowerCase()}", "${lastname.toLowerCase()}", "${email.toLowerCase()}", "${hash}", "${username.toLowerCase()}", "${generatedCode}", "${username.toLowerCase()}" );`,
+          `INSERT INTO user_registration (firstname, lastname, email, password, username, verificationCode, dynamoDBuserTable) VALUES (?, ?, ?, ?, ?, ?, ? );`,
+          [
+            firstname.toLowerCase(),
+            lastname.toLowerCase(),
+            email.toLowerCase(),
+            hash,
+            username.toLowerCase(),
+            generatedCode,
+            username.toLowerCase(),
+          ],
           (err, result) => {
             if (err) {
               res.status(400).send({
