@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "dev": "pm2 start server.js --name \"Login API\" --watch",
-    "prod": "pm2 start server.js --name \"Login API\""
+    "dev": "pm2 start server.js --name \"Login-API\" --watch",
+    "prod": "pm2 start server.js --name \"Login-API\""
   },
   "keywords": [],
   "author": "",
