@@ -37,7 +37,7 @@ server.use("/pass", resetPassword);
 
 //endpoint home
 server.get("/", (req, res) => {
-  res.status(200).send("Welcome Home");
+  res.status(200).send("Welcome Home to login api");
 });
 
 server.listen(5000, () => {
