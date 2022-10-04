@@ -40,6 +40,7 @@ server.get("/", (req, res) => {
   res.status(200).send("Welcome Home to login api");
 });
 
-server.listen(5000, () => {
+const port = process.env.port || 5000;
+server.listen(port, () => {
   console.log("my server is listening...");
 });
