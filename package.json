@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "start": "pm2 start server.js --name \"Login-API\" --watch",
     "dev": "pm2 start server.js --name \"Login-API\" --watch",
     "prod": "pm2 start server.js --name \"Login-API\""
   },
