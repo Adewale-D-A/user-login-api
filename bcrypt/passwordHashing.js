@@ -115,26 +115,17 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
                 }),
                 secretKey
               );
-              res
-                // .cookie("token", AccessToken, {
-                //   encode: String,
-                //   maxAge: 1000 * 60 * 10, //10mins
-                //   httpOnly: true,
-                //   secure: true,
-                //   sameSite: true,
-                // })
-                .status(200)
-                .send({
-                  success: true,
-                  message: "user Authenticated",
-                  access: AccessToken,
-                  user_data: {
-                    firstname: dbUsernameQuery[1].firstname,
-                    lastname: dbUsernameQuery[1].lastname,
-                    username: dbUsernameQuery[1].username,
-                    email: dbUsernameQuery[1].email,
-                  },
-                });
+              res.status(200).send({
+                success: true,
+                message: "user Authenticated",
+                access: AccessToken,
+                user_data: {
+                  firstname: dbUsernameQuery[1].firstname,
+                  lastname: dbUsernameQuery[1].lastname,
+                  username: dbUsernameQuery[1].username,
+                  email: dbUsernameQuery[1].email,
+                },
+              });
             }
           }
         );
@@ -157,26 +148,17 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
         }),
         secretKey
       );
-      res
-        .cookie("token", AccessToken, {
-          encode: String,
-          maxAge: 1000 * 60 * 10, //10mins
-          httpOnly: true,
-          secure: true,
-          sameSite: true,
-        })
-        // .clearCookie("data")
-        .status(200)
-        .send({
-          success: true,
-          message: "User Authenticated  Succesfully",
-          user_data: {
-            firstname: dbUsernameQuery[0].firstname,
-            lastname: dbUsernameQuery[0].lastname,
-            username: dbUsernameQuery[0].username,
-            email: dbUsernameQuery[0].email,
-          },
-        });
+      res.status(200).send({
+        success: true,
+        message: "User Authenticated  Succesfully",
+        access: AccessToken,
+        user_data: {
+          firstname: dbUsernameQuery[0].firstname,
+          lastname: dbUsernameQuery[0].lastname,
+          username: dbUsernameQuery[0].username,
+          email: dbUsernameQuery[0].email,
+        },
+      });
     }
   });
 };
