@@ -119,9 +119,9 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
                 .cookie("token", AccessToken, {
                   encode: String,
                   maxAge: 1000 * 60 * 10, //10mins
-                  // httpOnly: true,
-                  // secure: true,
-                  // sameSite: true,
+                  httpOnly: false,
+                  secure: true,
+                  sameSite: true,
                 })
                 .status(200)
                 .send({
