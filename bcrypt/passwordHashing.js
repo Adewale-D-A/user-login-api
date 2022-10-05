@@ -1,8 +1,6 @@
 const bcrypt = require("bcrypt");
 const { authToken } = require("../jwt-verification/AuthToken");
-const { bucketCredentials, mailCredentials } = require("../config");
-
-const secretKey = bucketCredentials.accessKeyId;
+const { mailCredentials, jwtSecretKey } = require("../config");
 
 const db = require("../dbCredentials");
 const {
@@ -113,7 +111,7 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
                   email: dbUsernameQuery[1].email,
                   dynamoDBuserTable: dbUsernameQuery[1].dynamoDBuserTable,
                 }),
-                secretKey
+                jwtSecretKey
               );
               res.status(200).send({
                 success: true,
@@ -146,7 +144,7 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
           email: dbUsernameQuery[0].email,
           dynamoDBuserTable: dbUsernameQuery[0].dynamoDBuserTable,
         }),
-        secretKey
+        jwtSecretKey
       );
       res.status(200).send({
         success: true,

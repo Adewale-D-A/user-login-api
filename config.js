@@ -25,6 +25,7 @@ const dynamoDBcredentials = {
   region: process.env.region,
 };
 
+const jwtSecretKey = process.env.jwtSecretKey;
 const jwtEmailVCode = process.env.jwtEmailVCode;
 
 exports.bucketCredentials = bucketCredentials;
@@ -32,3 +33,4 @@ exports.secret_data = secret_data;
 exports.mailCredentials = mailCredentials;
 exports.jwtEmailVCode = jwtEmailVCode;
 exports.dynamoDBcredentials = dynamoDBcredentials;
+exports.jwtSecretKey = jwtSecretKey;
