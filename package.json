@@ -2,12 +2,12 @@
   "name": "user-login-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "pm2 start server.js --name \"Login-API\" --watch",
-    "prod": "pm2 start server.js --name \"Login-API\""
+    "start": "node app.js",
+    "dev": "pm2 start app.js --name \"Login-API\" --watch",
+    "prod": "pm2 start app.js --name \"Login-API\""
   },
   "keywords": [],
   "author": "",
@@ -29,5 +29,9 @@
     "nodemon": "^2.0.19",
     "pm2": "^5.2.0",
     "randomstring": "^1.2.2"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=16.0.0"
   }
 }
