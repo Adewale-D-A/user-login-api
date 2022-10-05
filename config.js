@@ -1,29 +1,31 @@
+require("dotenv").config();
+
 const bucketCredentials = {
-  signatureVersion: "v4",
-  apiVersion: "2006-03-01",
-  accessKeyId: "AKIA3FHTGZ4UBQMKVMOG",
-  secretAccessKey: "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",
+  signatureVersion: process.env.signatureVersion,
+  apiVersion: process.env.apiVersion,
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
 };
 
 const secret_data = {
-  host: "iinvision-instance.c9efdhxi6bmj.us-east-1.rds.amazonaws.com",
-  user: "adewale",
-  password: "oluwadamilare",
-  name: "db_server",
+  host: process.env.MYSQLhost,
+  user: process.env.MYSQLuser,
+  password: process.env.MYSQLpassword,
+  name: process.env.MYSQLname,
 };
 
 const mailCredentials = {
-  user: "a.adewale.d@gmail.com",
-  password: "woudbfewkldfgkzs",
+  user: process.env.Emailuser,
+  password: process.env.Emailpassword,
 };
 
 const dynamoDBcredentials = {
-  accessKeyId: "AKIA3FHTGZ4UBQMKVMOG",
-  secretAccessKey: "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",
-  region: "us-east-1",
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
+  region: process.env.region,
 };
 
-const jwtEmailVCode = "woudbfewkldfgkzs";
+const jwtEmailVCode = process.env.jwtEmailVCode;
 
 exports.bucketCredentials = bucketCredentials;
 exports.secret_data = secret_data;

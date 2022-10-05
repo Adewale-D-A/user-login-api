@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const server = express();
-
+require("dotenv").config();
 // const { VerifyEmailLink } = require("./verifyEmailLink/verifyEmail");
 // const { verifyTokenCode } = require("./verifyTokenCode/verifyTokenCode");
 
@@ -13,7 +13,7 @@ const resetPassword = require("./resetPassword/resetPassword");
 server.use(cookieParser());
 server.use(
   cors({
-    origin: ["*", "http://localhost:3000"],
+    origin: ["*", process.env.localhost],
     credentials: true,
   })
 );
@@ -37,10 +37,10 @@ server.use("/pass", resetPassword);
 
 //endpoint home
 server.get("/", (req, res) => {
-  res.status(200).send("Welcome Home to login api");
+  res.status(200).send("User login api");
 });
 
 const port = process.env.port || 5000;
 server.listen(port, () => {
-  console.log("my server is listening...");
+  console.log(`login server is listening on ${port}...`);
 });
