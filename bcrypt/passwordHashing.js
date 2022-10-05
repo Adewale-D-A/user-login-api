@@ -120,7 +120,7 @@ const verifyHash = (inputPassword, dbUsernameQuery, res) => {
                   encode: String,
                   maxAge: 1000 * 60 * 10, //10mins
                   httpOnly: false,
-                  secure: true,
+                  secure: false,
                   sameSite: true,
                 })
                 .status(200)
