@@ -37,7 +37,7 @@ server.use("/pass", resetPassword);
 
 //endpoint home
 server.get("/", (req, res) => {
-  res.status(200).send("User login api");
+  res.status(200).send("User login api from git");
 });
 
 const port = process.env.port || 5000;
