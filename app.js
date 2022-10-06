@@ -13,7 +13,7 @@ const resetPassword = require("./resetPassword/resetPassword");
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["*", process.env.localhost],
+    origin: ["*", process.env.LOCALHOST],
     credentials: true,
   })
 );
