@@ -1,32 +1,32 @@
 require("dotenv").config();
 
 const bucketCredentials = {
-  signatureVersion: process.env.signatureVersion,
-  apiVersion: process.env.apiVersion,
-  accessKeyId: process.env.accessKeyId,
-  secretAccessKey: process.env.secretAccessKey,
+  signatureVersion: process.env.SIGNATURE_VERSION,
+  apiVersion: process.env.API_VERSION,
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
 };
 
 const secret_data = {
-  host: process.env.MYSQLhost,
-  user: process.env.MYSQLuser,
-  password: process.env.MYSQLpassword,
-  name: process.env.MYSQLname,
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  name: process.env.MYSQL_NAME,
 };
 
 const mailCredentials = {
-  user: process.env.Emailuser,
-  password: process.env.Emailpassword,
+  user: process.env.EMAIL_USER,
+  password: process.env.EMAIL_PASSWORD,
 };
 
 const dynamoDBcredentials = {
-  accessKeyId: process.env.accessKeyId,
-  secretAccessKey: process.env.secretAccessKey,
-  region: process.env.region,
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
 };
 
-const jwtSecretKey = process.env.jwtSecretKey;
-const jwtEmailVCode = process.env.jwtEmailVCode;
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
+const jwtEmailVCode = process.env.JWT_EMAIL_CODE;
 
 exports.bucketCredentials = bucketCredentials;
 exports.secret_data = secret_data;
