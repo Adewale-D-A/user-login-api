@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.status(200).send("User login api from git");
 });
 
-const port = process.env.port || 5000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`login server is listening on ${port}...`);
 });
