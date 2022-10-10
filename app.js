@@ -13,7 +13,12 @@ const resetPassword = require("./resetPassword/resetPassword");
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["*", process.env.LOCALHOST],
+    origin: [
+      "*",
+      process.env.LOCALHOST,
+      "http://iinvision-frontend.s3-website-us-east-1.amazonaws.com",
+      "https://d35y4ivrvv9jqc.cloudfront.net",
+    ],
     credentials: true,
   })
 );
