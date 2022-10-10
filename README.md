@@ -1,4 +1,4 @@
-# NODE JS restAPI
+# NODE JS User Authentication restAPI using AWS RDS(MySQL) and hosted on AWS Elastic Beanstalk <a href="http://user-login-api.us-east-1.elasticbeanstalk.com/" target="_blank">server endpoint</a>
 
 ### This Repository Contains An Express Server
 
