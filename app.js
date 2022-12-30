@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require("cors");
+// const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 require("dotenv").config();
@@ -10,26 +10,29 @@ const authenticate = require("./register");
 const emailVerification = require("./emailTokenRelated/sendEmailToken");
 const resetPassword = require("./resetPassword/resetPassword");
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: [
-      "*",
-      process.env.LOCALHOST,
-      "http://iinvision-frontend.s3-website-us-east-1.amazonaws.com",
-      "https://d35y4ivrvv9jqc.cloudfront.net",
-    ],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "*",
+//       process.env.LOCALHOST,
+//       "http://iinvision-frontend.s3-website-us-east-1.amazonaws.com",
+//       "https://d35y4ivrvv9jqc.cloudfront.net",
+//     ],
+//     credentials: true,
+//   })
+// );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//   next();
-//   });
 
 //login and registration endpoints
 app.use("/authenticate", authenticate);
